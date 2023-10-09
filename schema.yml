@@ -1,0 +1,404 @@
+openapi: 3.0.3
+info:
+  title: URL Shortener
+  version: 0.0.0
+paths:
+  /schema/:
+    get:
+      operationId: schema_retrieve
+      description: |-
+        OpenApi3 schema for this API. Format can be selected via content negotiation.
+
+        - YAML: application/vnd.oai.openapi
+        - JSON: application/vnd.oai.openapi+json
+      parameters:
+      - in: query
+        name: format
+        schema:
+          type: string
+          enum:
+          - json
+          - yaml
+      - in: query
+        name: lang
+        schema:
+          type: string
+          enum:
+          - af
+          - ar
+          - ar-dz
+          - ast
+          - az
+          - be
+          - bg
+          - bn
+          - br
+          - bs
+          - ca
+          - ckb
+          - cs
+          - cy
+          - da
+          - de
+          - dsb
+          - el
+          - en
+          - en-au
+          - en-gb
+          - eo
+          - es
+          - es-ar
+          - es-co
+          - es-mx
+          - es-ni
+          - es-ve
+          - et
+          - eu
+          - fa
+          - fi
+          - fr
+          - fy
+          - ga
+          - gd
+          - gl
+          - he
+          - hi
+          - hr
+          - hsb
+          - hu
+          - hy
+          - ia
+          - id
+          - ig
+          - io
+          - is
+          - it
+          - ja
+          - ka
+          - kab
+          - kk
+          - km
+          - kn
+          - ko
+          - ky
+          - lb
+          - lt
+          - lv
+          - mk
+          - ml
+          - mn
+          - mr
+          - ms
+          - my
+          - nb
+          - ne
+          - nl
+          - nn
+          - os
+          - pa
+          - pl
+          - pt
+          - pt-br
+          - ro
+          - ru
+          - sk
+          - sl
+          - sq
+          - sr
+          - sr-latn
+          - sv
+          - sw
+          - ta
+          - te
+          - tg
+          - th
+          - tk
+          - tr
+          - tt
+          - udm
+          - uk
+          - ur
+          - uz
+          - vi
+          - zh-hans
+          - zh-hant
+      tags:
+      - schema
+      security:
+      - {}
+      responses:
+        '200':
+          content:
+            application/vnd.oai.openapi:
+              schema:
+                type: object
+                additionalProperties: {}
+            application/yaml:
+              schema:
+                type: object
+                additionalProperties: {}
+            application/vnd.oai.openapi+json:
+              schema:
+                type: object
+                additionalProperties: {}
+            application/json:
+              schema:
+                type: object
+                additionalProperties: {}
+          description: ''
+  /us_svc/open:
+    get:
+      operationId: us_svc_open_retrieve
+      tags:
+      - us_svc
+      security:
+      - {}
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ShortURL'
+          description: ''
+  /us_svc/shorten:
+    post:
+      operationId: us_svc_shorten_create
+      tags:
+      - us_svc
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ShortURL'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/ShortURL'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/ShortURL'
+        required: true
+      security:
+      - {}
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ShortURL'
+          description: ''
+  /us_svc/signin/:
+    put:
+      operationId: us_svc_signin_update
+      tags:
+      - us_svc
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UserEmailLogin'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/UserEmailLogin'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/UserEmailLogin'
+      security:
+      - {}
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UserEmailLogin'
+          description: ''
+  /us_svc/signup/:
+    post:
+      operationId: us_svc_signup_create
+      tags:
+      - us_svc
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UserEmailLogin'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/UserEmailLogin'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/UserEmailLogin'
+      security:
+      - {}
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UserEmailLogin'
+          description: ''
+  /us_svc/url-list:
+    get:
+      operationId: us_svc_url_list_retrieve
+      tags:
+      - us_svc
+      security:
+      - {}
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ShortURLDetail'
+          description: ''
+  /us_svc/validate/:
+    put:
+      operationId: us_svc_validate_update
+      tags:
+      - us_svc
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ValidationOTP'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/ValidationOTP'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/ValidationOTP'
+        required: true
+      security:
+      - {}
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ValidationOTP'
+          description: ''
+components:
+  schemas:
+    ShortURL:
+      type: object
+      properties:
+        id:
+          type: integer
+          readOnly: true
+        user:
+          type: integer
+        original_url:
+          type: string
+          nullable: true
+          maxLength: 255
+        shortened_url:
+          type: string
+          nullable: true
+          maxLength: 255
+        expiration_timestamp:
+          type: string
+          format: date-time
+        max_usage:
+          type: integer
+          maximum: 2147483647
+          minimum: -2147483648
+        uuid:
+          type: string
+          nullable: true
+          maxLength: 255
+      required:
+      - expiration_timestamp
+      - id
+      - max_usage
+      - original_url
+      - user
+    ShortURLAccessRelated:
+      type: object
+      properties:
+        id:
+          type: integer
+          readOnly: true
+        ip_address:
+          type: string
+          nullable: true
+          maxLength: 255
+        user_agent:
+          type: string
+          nullable: true
+          maxLength: 255
+        access_time:
+          type: string
+          format: date-time
+      required:
+      - access_time
+      - id
+    ShortURLDetail:
+      type: object
+      properties:
+        id:
+          type: integer
+          readOnly: true
+        usage:
+          type: array
+          items:
+            $ref: '#/components/schemas/ShortURLAccessRelated'
+        user:
+          type: integer
+        original_url:
+          type: string
+          nullable: true
+          maxLength: 255
+        shortened_url:
+          type: string
+          nullable: true
+          maxLength: 255
+        expiration_timestamp:
+          type: string
+          format: date-time
+        max_usage:
+          type: integer
+          maximum: 2147483647
+          minimum: -2147483648
+        uuid:
+          type: string
+          nullable: true
+          maxLength: 255
+      required:
+      - expiration_timestamp
+      - id
+      - max_usage
+      - original_url
+      - usage
+      - user
+    UserEmailLogin:
+      type: object
+      properties:
+        id:
+          type: integer
+          readOnly: true
+        name:
+          type: string
+          nullable: true
+          maxLength: 255
+        email:
+          type: string
+          nullable: true
+          maxLength: 255
+      required:
+      - id
+    ValidationOTP:
+      type: object
+      properties:
+        id:
+          type: integer
+          readOnly: true
+        email:
+          type: string
+          nullable: true
+          maxLength: 255
+        otp:
+          type: integer
+          maximum: 2147483647
+          minimum: -2147483648
+      required:
+      - id
+      - otp

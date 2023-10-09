@@ -1,0 +1,7 @@
+Django==4.2.6
+psycopg2-binary==2.9.6
+djangorestframework==3.14.0
+email-validator==2.0.0.post2
+drf-spectacular==0.26.5
+PyJWT==2.8.0
+pyshorteners==1.0.1
