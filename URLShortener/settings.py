@@ -82,8 +82,8 @@ DATABASES = {
         'NAME': 'postgres',
         'USER': 'postgres',
         'PASSWORD': 'postgres',
-        'HOST': env_vars.DB_HOST,
-        # 'HOST': '172.31.33.7',
+        # 'HOST': '172.17.0.2',
+        'HOST': '172.31.33.7',
         'PORT': 5432,
     }
 }
@@ -134,8 +134,8 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 # Replace sender@example.com with your "From" address.
 # This address must be verified with Amazon SES.
 SENDER = 'aditya17325@iiitd.ac.in'
-APP_PASSWORD = env_vars.APP_PASSWORD
-ENCRYPTION_SECRET_KEYSTRING = env_vars.ENCRYPTION_SECRET_KEYSTRING
+APP_PASSWORD = "wttv fmhl lrcw cmzk"
+ENCRYPTION_SECRET_KEYSTRING = 'lol'
 REST_FRAMEWORK = {
     'DEFAULT_SCHEMA_CLASS': 'drf_spectacular.openapi.AutoSchema',
     'DEFAULT_AUTHENTICATION_CLASSES': (
@@ -147,4 +147,4 @@ SPECTACULAR_SETTINGS = {
     'AUTHENTICATION_WHITELIST': ['URLShortenerService.jwtAuth.SafeJWTAuthentication'],
 }
 
-BASE_URL = env_vars.BASE_URL
+BASE_URL = '13.234.213.170:8000/'
