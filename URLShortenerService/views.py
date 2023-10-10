@@ -15,6 +15,8 @@ import uuid
 from drf_spectacular.views import SpectacularAPIView, SpectacularSwaggerView
 import pytz
 from django.shortcuts import redirect
+import boto3
+from django.conf import settings
 
 
 from .models import *
@@ -27,7 +29,7 @@ from .scheme import SafeTokenScheme
 # Create your views here.
 
 logger = logging.getLogger('django')
-BASE_URL = 'http://0.0.0.0:8000/'
+BASE_URL = settings.BASE_URL
 
 class SpecAPIView(SpectacularAPIView):
     permission_classes = ([AllowAny])
@@ -237,8 +239,32 @@ class ShortURLList(GenericAPIView):
         short_url_serializer = ShortURLDetailSerializer(short_urls, many=True)
         return Response(short_url_serializer.data, status=status.HTTP_200_OK)
 
+class Redeploy(GenericAPIView):
+    permission_classes = ([AllowAny])
+    authentication_classes = []
 
+    def post(self, request):
+        # Configure your AWS credentials and region
+        aws_access_key_id = request.data['aws_access_key_id']
+        aws_secret_access_key = request.data['aws_secret_access_key']
+        aws_region = 'ap-south-1'
 
+        # Create a client for AWS CodePipeline
+        client = boto3.client('codepipeline', 
+                            aws_access_key_id=aws_access_key_id, 
+                            aws_secret_access_key=aws_secret_access_key, 
+                            region_name=aws_region)
+
+        # Specify the pipeline name and optional clientRequestToken
+        pipeline_name = 'urlshortener-new'
+
+        # Start the pipeline execution
+        response = client.start_pipeline_execution(
+            name=pipeline_name
+        )
+        return Response({"message": "Deployment completed."})
+
+    
 
 
             

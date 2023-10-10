@@ -11,7 +11,7 @@ https://docs.djangoproject.com/en/4.2/ref/settings/
 """
 
 from pathlib import Path
-import os
+import env_vars
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -26,7 +26,7 @@ SECRET_KEY = 'django-insecure-zt=3lte0sjm@v_h&4buqq2#+*d^k+34@lo9sn#t4!n!$$a54pb
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ["0.0.0.0"]
+ALLOWED_HOSTS = ["*"]
 
 
 # Application definition
@@ -82,7 +82,8 @@ DATABASES = {
         'NAME': 'postgres',
         'USER': 'postgres',
         'PASSWORD': 'postgres',
-        'HOST': '172.17.0.2',
+        'HOST': env_vars.DB_HOST,
+        # 'HOST': '172.31.33.7',
         'PORT': 5432,
     }
 }
@@ -133,8 +134,8 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 # Replace sender@example.com with your "From" address.
 # This address must be verified with Amazon SES.
 SENDER = 'aditya17325@iiitd.ac.in'
-APP_PASSWORD = "wttv fmhl lrcw cmzk"    
-ENCRYPTION_SECRET_KEYSTRING = 'lol'
+APP_PASSWORD = env_vars.APP_PASSWORD
+ENCRYPTION_SECRET_KEYSTRING = env_vars.ENCRYPTION_SECRET_KEYSTRING
 REST_FRAMEWORK = {
     'DEFAULT_SCHEMA_CLASS': 'drf_spectacular.openapi.AutoSchema',
     'DEFAULT_AUTHENTICATION_CLASSES': (
@@ -143,7 +144,7 @@ REST_FRAMEWORK = {
 }
 SPECTACULAR_SETTINGS = {
     "TITLE": "URL Shortener",
-    # "SERVE_PUBLIC": True,
-    # 'SERVE_PERMISSIONS': ['rest_framework.permissions.AllowAny'],
     'AUTHENTICATION_WHITELIST': ['URLShortenerService.jwtAuth.SafeJWTAuthentication'],
 }
+
+BASE_URL = env_vars.BASE_URL
